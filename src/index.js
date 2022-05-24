@@ -22,7 +22,7 @@ const propTypes = {
   icon: PropTypes.node,
   okIcon: PropTypes.any,
   okButton: PropTypes.object,
-  borderRadius: PropTypes.number
+  borderRadius: PropTypes.number,
 };
 
 //default props value
@@ -32,7 +32,7 @@ const defaultProps = {
   textColor: "#000",
   borderColor: "rgba(0,0,0,0)",
   okButton: { visible: true, duration: 300 },
-  borderRadius: 0
+  borderRadius: 0,
 };
 
 export default class RNSwipeVerify extends Component {
@@ -46,7 +46,7 @@ export default class RNSwipeVerify extends Component {
       verify: false,
       percent: 0,
       position: { x: 0, y: 0 },
-      dimensions: { width: 0, height: 0 }
+      dimensions: { width: 0, height: 0 },
     };
 
     this._panResponder = PanResponder.create({
@@ -64,7 +64,7 @@ export default class RNSwipeVerify extends Component {
           const {
             drag,
             verify,
-            dimensions: { width }
+            dimensions: { width },
           } = this.state;
           const maxMoving = width - buttonSize;
 
@@ -80,7 +80,8 @@ export default class RNSwipeVerify extends Component {
             return;
           }
           drag.setValue({ x: toX, y: 0 });
-        }
+        },
+        useNativeDriver: false,
       }),
       onPanResponderRelease: () => {
         if (this.state.verify) return;
@@ -100,7 +101,7 @@ export default class RNSwipeVerify extends Component {
         // Another component has become the responder, so this gesture
         // should be cancelled
         // console.log("onPanResponderTerminate", gestureState);
-      }
+      },
     });
   }
 
@@ -108,7 +109,8 @@ export default class RNSwipeVerify extends Component {
     this.state.drag.setOffset({ x: 0, y: 0 });
     Animated.timing(this.state.drag, {
       toValue: { x: 0, y: 0 },
-      duration: 300
+      duration: 300,
+      useNativeDriver: true,
     }).start();
     this.toggleShowAnimation(true, this.props.okButton.duration);
     this.setState({ moving: false, verify: false, percent: 0 });
@@ -120,7 +122,8 @@ export default class RNSwipeVerify extends Component {
       this.state.buttonOpacity, // The animated value to drive
       {
         toValue: visible ? 1 : 0, // Animate to opacity: 1 (opaque)
-        duration: duration // Make it take a while
+        duration: duration, // Make it take a while
+        useNativeDriver: true,
       }
     ).start();
   }
@@ -132,7 +135,7 @@ export default class RNSwipeVerify extends Component {
       borderColor,
       backgroundColor,
       icon,
-      borderRadius
+      borderRadius,
     } = this.props;
     const { buttonOpacity } = this.state;
 
@@ -146,29 +149,29 @@ export default class RNSwipeVerify extends Component {
           borderRadius: borderRadius + 4,
           padding: 2,
           flex: 1,
-          height: buttonSize+4
+          height: buttonSize + 4,
         }}
       >
         <View
-          onLayout={event => {
+          onLayout={(event) => {
             var { x, y, width, height } = event.nativeEvent.layout;
             this.setState({
               dimensions: { width, height },
-              position: { x, y }
+              position: { x, y },
             });
           }}
           style={{
             backgroundColor,
             height: buttonSize,
             borderRadius,
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           {this.props.children && (
             <View
               style={{
                 position: "absolute",
-                alignSelf: "center"
+                alignSelf: "center",
               }}
             >
               {this.props.children}
@@ -186,8 +189,8 @@ export default class RNSwipeVerify extends Component {
                 backgroundColor: buttonColor,
                 justifyContent: "center",
                 alignItems: "center",
-                opacity: buttonOpacity
-              }
+                opacity: buttonOpacity,
+              },
             ]}
           >
             {icon}
