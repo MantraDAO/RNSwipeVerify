@@ -52,8 +52,7 @@ export default class RNSwipeVerify extends Component {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
-        const positionXY = this.state.drag.__getValue();
-        this.state.drag.setOffset(positionXY);
+        this.state.drag.setOffset({ x: 0, y: 0 });
         this.state.drag.setValue({ x: 0, y: 0 });
       },
       onPanResponderMove: Animated.event([null, { dx: this.state.drag.x }], {
